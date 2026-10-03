@@ -35,7 +35,7 @@ CHARSET = [
     ("Capitals", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
     ("Lowercase", "abcdefghijklmnopqrstuvwxyz"),
     ("Figures (tabular)", "0123456789"),
-    ("Punctuation", ".,:;!?'\"-–—/()+=_"),
+    ("Punctuation", ".,:;!?'\"-–—/()+=_&@"),
     ("Symbols", "°←↑→↓✈"),
 ]
 

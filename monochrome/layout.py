@@ -31,6 +31,7 @@ PUNCTUATION = (
     "period", "comma", "colon", "semicolon", "exclam", "question",
     "hyphen", "endash", "emdash", "slash", "parenleft", "parenright",
     "plus", "equal", "degree", "quotesingle", "quotedbl", "underscore",
+    "at", "ampersand",
 )
 
 SYMBOLS = ("arrowright", "arrowleft", "arrowup", "arrowdown", "airplane")
@@ -66,6 +67,7 @@ EXTRA_CODEPOINTS = {
     "plus": 0x2B, "equal": 0x3D, "degree": 0xB0, "quotesingle": 0x27,
     "quotedbl": 0x22, "underscore": 0x5F, "arrowleft": 0x2190, "arrowup": 0x2191,
     "arrowright": 0x2192, "arrowdown": 0x2193, "airplane": 0x2708,
+    "at": 0x40, "ampersand": 0x26,
 }
 
 
@@ -113,6 +115,7 @@ SIDES = {
     "degree": "rr", "quotesingle": "rr", "quotedbl": "rr", "underscore": "rr",
     "arrowleft": "rr", "arrowright": "rr", "arrowup": "rr", "arrowdown": "rr",
     "airplane": "rr",
+    "at": "rr", "ampersand": "rd",
 }
 
 DEFAULT_SIDES = "rr"

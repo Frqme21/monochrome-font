@@ -170,7 +170,7 @@ EDGE = {"s": 72, "r": 52, "f": 46, "d": 20}   # stem, round, flat, diagonal
 SIDES = {"A": "dd", "H": "ss", "O": "rr", "T": "ff", ...}
 ```
 
-That keeps a line of text evenly spaced without hand-nudging 85 glyphs.
+That keeps a line of text evenly spaced without hand-nudging 87 glyphs.
 
 Kerning is a plain table in `layout.py`, compiled to a GPOS `kern` feature:
 
