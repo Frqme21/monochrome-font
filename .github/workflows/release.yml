@@ -1,0 +1,78 @@
+# The committed binaries in fonts/ are rebuilt from scratch by this workflow and
+# checked against the ones in the tree, so a stale artifact can never ship.
+# The fonts themselves are committed: a typeface is the deliverable, and most
+# visitors want the .ttf rather than the generator.
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  TAG: ${{ github.ref_name }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install
+        run: pip install -r requirements-dev.txt
+
+      - name: Rebuild from source
+        run: python build.py --out dist/fresh --quiet
+
+      - name: Verify the committed fonts are not stale
+        # Rebuilding is cheap, so compare the fresh outlines against what is in
+        # the tree. Only the head timestamps may differ between two builds.
+        run: python tools/verify_fonts.py fonts dist/fresh
+
+      - name: Specimens
+        run: |
+          python tools/html_specimen.py --out dist/specimen.html
+          for f in fonts/*.ttf; do
+            python tools/specimen.py --font "$f" --out "dist/$(basename "${f%.ttf}")-specimen.png"
+          done
+
+      - name: Package
+        # -j flattens the archive, so it unzips into a tidy pile of files.
+        run: |
+          mkdir -p dist
+          zip -j "dist/monochrome-aviation-${TAG}.zip" \
+            fonts/monochrome-aviation*.ttf \
+            fonts/monochrome-aviation*.woff2 \
+            LICENSE README.md
+
+      - name: Has a release for this tag already?
+        id: existing
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Attach the assets
+        if: steps.existing.outputs.skip != 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Monochrome Aviation ${{ env.TAG }}"
+          generate_release_notes: true
+          draft: true
+          overwrite_files: true
+          files: |
+            dist/*.zip
+            dist/*.ttf
+            dist/*.woff2
+            dist/*.png
+            dist/specimen.html

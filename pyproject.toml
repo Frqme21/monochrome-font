@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "monochrome-aviation"
+version = "3.0.0"
+description = "A minimal, fully rounded monoline aviation typeface, generated from skeletons."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "CC-BY-ND-4.0"
+license-files = ["LICENSE"]
+keywords = ["font", "typeface", "opentype", "truetype", "aviation", "monoline"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Topic :: Text Processing :: Fonts",
+]
+dependencies = [
+    "fonttools>=4.50",
+    "skia-pathops>=0.8",
+    "brotli>=1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7",
+    "fonttools[ufo]>=4.50",
+]
+
+[project.scripts]
+monochrome-build = "monochrome.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["monochrome*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
